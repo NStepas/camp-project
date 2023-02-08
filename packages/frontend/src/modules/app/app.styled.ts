@@ -39,6 +39,9 @@ export const GlobalStyles = createGlobalStyle`
     line-height: 1.5;
     background-color: ${COLORS.white};
   }
+  #root{
+    height: 100vh;
+  }
 
   ul[class],
   ol[class] {

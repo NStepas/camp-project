@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useMutation, useQueryClient } from 'react-query';
-import { Card, CardActions, TextField, Typography } from '@mui/material';
+import { Card, CardActions, TextField, Typography, Grid } from '@mui/material';
 import { Container, Stack, styled } from '@mui/system';
 import { useFormik } from 'formik';
 import { Button } from '@mui/material';
@@ -9,12 +9,25 @@ import { initialValues, validate } from './formValidation';
 import { signIn } from '../api/auth.api';
 import { ISignIn } from '../../shared/interfaces/auth.interface';
 import { COLORS } from '../../theme/colors.const';
+
 export const TextFieldWrapper = styled(TextField)`
   fieldset {
     border: inherit;
     border-radius: 1.5rem;
-
+  }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px ${COLORS.lightgrey} inset !important;
+  }
+  input {
     color: ${COLORS.grey};
+    background-color: ${COLORS.lightgrey};
+    border-radius: 1.5rem;
+  }
+  input:-webkit-autofill {
+    -webkit-background-clip: text;
   }
   .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill {
     backgrund-color: white;
@@ -43,8 +56,10 @@ export const SignInContainer = () => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Container sx={{ maxWidth: '24rem', justifyContent: 'center' }}>
+    <Container
+      sx={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+    >
+      <form onSubmit={formik.handleSubmit}>
         <Card
           sx={{
             maxWidth: '24rem',
@@ -60,15 +75,13 @@ export const SignInContainer = () => {
             <TextFieldWrapper
               id="name"
               name="name"
-              label="Name"
-              autoComplete="current-name"
+              label="Name/Email"
               variant="outlined"
               autoFocus={true}
               value={formik.values.name}
               onChange={formik.handleChange}
               error={formik.touched.name && Boolean(formik.errors.name)}
               helperText={formik.touched.name && formik.errors.name}
-              // sx={{ borderRadius: 21 }}
             />
 
             <TextFieldWrapper
@@ -76,14 +89,13 @@ export const SignInContainer = () => {
               name="password"
               label="Password"
               type="password"
-              autoComplete="current-password"
               autoFocus={true}
               value={formik.values.password}
               onChange={formik.handleChange}
               error={formik.touched.password && Boolean(formik.errors.name)}
               helperText={formik.touched.password && formik.errors.password}
             />
-            <CardActions>
+            <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <div>
                 <div>
                   <p style={{ color: `${COLORS.grey}` }}>Need an account?</p>
@@ -92,20 +104,20 @@ export const SignInContainer = () => {
                   </Link>
                 </div>
               </div>
-              <CardActions sx={{ justifyContent: 'end' }}>
+              <CardActions>
                 <Button
                   variant="contained"
                   type="submit"
                   size="small"
                   sx={{ backgroundColor: `${COLORS.indigo}` }}
                 >
-                  Submit
+                  Sign In
                 </Button>
               </CardActions>
             </CardActions>
           </Stack>
         </Card>
-      </Container>
-    </form>
+      </form>
+    </Container>
   );
 };
