@@ -27,3 +27,15 @@ export const ROUTER_KEYS = {
   HOME: 'home',
   AUTHORIZED: 'authorized'
 };
+
+export const SIGN_IN = {
+  ROOT: '/sign-in'
+  // HOME: 'sign-in',
+  // AUTHORIZED: 'not-authorized'
+};
+
+export const SIGN_UP = {
+  ROOT: '/sign-up'
+  // HOME: 'sign-up',
+  // AUTHORIZED: 'not-authorized'
+};

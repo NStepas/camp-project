@@ -1,36 +1,19 @@
-// import { Document, Model, model, Schema } from 'mongoose'
-// // TODO: Use it as an example
-// /**
-//  * Interface to model the User Schema for TypeScript.
-//  * @param email:string
-//  * @param password:string
-//  * @param avatar:string
-//  */
-// export interface IUser extends Document {
-//   email: string
-//   password: string
-//   avatar: string
-// }
+import { Schema, model } from 'mongoose';
 
-// const userSchema: Schema = new Schema({
-//   email: {
-//     type: String,
-//     required: true,
-//     unique: true
-//   },
-//   password: {
-//     type: String,
-//     required: true
-//   },
-//   avatar: {
-//     type: String
-//   },
-//   date: {
-//     type: Date,
-//     default: Date.now
-//   }
-// })
+const userSchema = new Schema<{ name: string; email: string; password: string }>({
+  name: {
+    type: String,
+    require: true
+  },
+  email: {
+    type: String,
+    require: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    require: true
+  }
+});
 
-// const User: Model<IUser> = model('User', userSchema)
-
-// export default User
+export const User = model<{ name: string; email: string; password: string }>('User', userSchema);
