@@ -6,25 +6,32 @@ import { useFormik } from 'formik';
 
 import { initialValues, validate } from './formValidation';
 import { signIn } from '../api/auth.api';
-import { ISignUp } from '../../shared/interfaces/auth.interface';
+import { ISignUp } from '../../common/interfaces/auth.interface';
 import { COLORS } from '../../theme/colors.const';
+
 export const TextFieldWrapper = styled(TextField)`
   fieldset {
     border: inherit;
     border-radius: 1.5rem;
-    color: ${COLORS.grey};
   }
-
-  .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill {
-    color: grey;
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px ${COLORS.lightgrey} inset !important;
+  }
+  input {
+    color: ${COLORS.grey};
+    background-color: ${COLORS.lightgrey};
     border-radius: 1.5rem;
   }
-`;
-export const StyledButton = styled(Button)`
-  .css-j1tjve-MuiButtonBase-root-MuiButton-root {
-    margin-top: 5rem;
-    background-color: ${COLORS.indigo};
-    color: red;
+  input:-webkit-autofill {
+    -webkit-background-clip: text;
+  }
+  .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill {
+    backgrund-color: white;
+    color: white;
+    border-radius: 1.5rem;
   }
 `;
 
@@ -48,11 +55,13 @@ export const SignUpContainer = () => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Container sx={{ maxWidth: '24rem', justifyContent: 'center' }}>
+    <Container
+      sx={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+    >
+      <form onSubmit={formik.handleSubmit}>
         <Card
           sx={{
-            maxWidth: '24rem',
+            width: '25rem',
             justifyContent: 'center',
             border: 'none',
             boxShadow: 'none'
@@ -61,12 +70,11 @@ export const SignUpContainer = () => {
           <Typography gutterBottom variant="h5" component="div">
             Sign Up
           </Typography>
-          <Stack spacing={4} sx={{ mt: '3rem' }}>
+          <Stack spacing={2} sx={{ mt: '3rem' }}>
             <TextFieldWrapper
               id="name"
               name="name"
               label="Name"
-              autoComplete="current-name"
               variant="outlined"
               autoFocus={true}
               value={formik.values.name}
@@ -79,7 +87,6 @@ export const SignUpContainer = () => {
               id="email"
               name="email"
               label="Email"
-              autoComplete="current-email"
               variant="outlined"
               autoFocus={true}
               value={formik.values.email}
@@ -93,40 +100,41 @@ export const SignUpContainer = () => {
               name="password"
               label="Password"
               type="password"
-              autoComplete="current-password"
               autoFocus={true}
               value={formik.values.password}
               onChange={formik.handleChange}
               error={formik.touched.password && Boolean(formik.errors.name)}
               helperText={formik.touched.password && formik.errors.password}
             />
-            <CardActions>
+            <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <div>
                 <div>
-                  <p style={{ color: `${COLORS.grey}` }}>Already a member?</p>
+                  <Typography style={{ color: `${COLORS.grey}` }}>Already a member?</Typography>
                   <Link to="/sign-in" style={{ color: `${COLORS.indigo}` }}>
                     Sign In
                   </Link>
                 </div>
               </div>
-              <CardActions sx={{ display: 'flex', flexDirection: 'row-reverse' }}>
-                <StyledButton
+              <CardActions>
+                <Button
                   variant="contained"
                   type="submit"
                   size="small"
                   sx={{
                     backgroundColor: `${COLORS.indigo}`,
                     display: 'flex',
-                    flexDirection: 'row-reverse'
+                    flexDirection: 'row-reverse',
+                    width: '10rem',
+                    borderRadius: '1.5rem'
                   }}
                 >
                   CREATE ACCOUNT
-                </StyledButton>
+                </Button>
               </CardActions>
             </CardActions>
           </Stack>
         </Card>
-      </Container>
-    </form>
+      </form>
+    </Container>
   );
 };

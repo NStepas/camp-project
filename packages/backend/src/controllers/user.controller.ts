@@ -18,6 +18,10 @@ export class UserController {
         console.log('failed to bcrept password');
       }
       const user = await this.userService.createUser(req.body, bcryptedPassword);
+      if (!user) {
+        // todo error
+        console.log('error');
+      }
       const jwtToken = await this.authService.jwtGenerator(user._id, user.email);
       return res.json({ user: user, jwtToken });
     } catch (e) {

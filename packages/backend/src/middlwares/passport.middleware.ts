@@ -9,7 +9,7 @@ interface JWTPayload {
 export const jwtStrategy = new JwtStrategy(
   {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: 'MY_SUPER_SECRET_KEY'
+    secretOrKey: 'SUPER_SECRET_KEY'
   },
   async (payload: JWTPayload, done) => {
     try {

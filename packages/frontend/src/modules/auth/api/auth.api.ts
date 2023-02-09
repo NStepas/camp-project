@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ISignIn, ISignUp } from '../../shared/interfaces/auth.interface';
+import { ISignIn, ISignUp } from '../../common/interfaces/auth.interface';
 
 const authApi = axios.create({
   baseURL: 'http://localhost:3000'

@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import { useMutation, useQueryClient } from 'react-query';
-import { Card, CardActions, TextField, Typography, Grid } from '@mui/material';
+import { Card, CardActions, TextField, Typography, Button } from '@mui/material';
 import { Container, Stack, styled } from '@mui/system';
 import { useFormik } from 'formik';
-import { Button } from '@mui/material';
 
 import { initialValues, validate } from './formValidation';
 import { signIn } from '../api/auth.api';
-import { ISignIn } from '../../shared/interfaces/auth.interface';
+import { ISignIn } from '../../common/interfaces/auth.interface';
 import { COLORS } from '../../theme/colors.const';
+import { WEIGHTS } from '../../theme/fonts.const';
 
 export const TextFieldWrapper = styled(TextField)`
   fieldset {
@@ -62,7 +62,7 @@ export const SignInContainer = () => {
       <form onSubmit={formik.handleSubmit}>
         <Card
           sx={{
-            maxWidth: '24rem',
+            width: '25rem',
             justifyContent: 'center',
             border: 'none',
             boxShadow: 'none'
@@ -71,7 +71,7 @@ export const SignInContainer = () => {
           <Typography gutterBottom variant="h5" component="div">
             Sign In
           </Typography>
-          <Stack spacing={4} sx={{ mt: '3rem' }}>
+          <Stack spacing={2} sx={{ mt: '3rem' }}>
             <TextFieldWrapper
               id="name"
               name="name"
@@ -109,9 +109,15 @@ export const SignInContainer = () => {
                   variant="contained"
                   type="submit"
                   size="small"
-                  sx={{ backgroundColor: `${COLORS.indigo}` }}
+                  sx={{
+                    backgroundColor: `${COLORS.indigo}`,
+                    display: 'flex',
+                    flexDirection: 'row-reverse',
+                    width: '10rem',
+                    borderRadius: '1.5rem'
+                  }}
                 >
-                  Sign In
+                  LOGIN
                 </Button>
               </CardActions>
             </CardActions>

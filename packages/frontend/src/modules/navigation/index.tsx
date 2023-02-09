@@ -12,8 +12,8 @@ export const MainRouter = () => (
       <Route exact path={APP_KEYS.ROUTER_KEYS.ROOT} component={HomePageContainer} />
       {/* <Route path="*" element={<HomePageContainer />} /> */}
       {/* <Route path={APP_KEYS.ROUTER_KEYS.ROOT} component={<HomePageContainer />} /> */}
-      <Route path={APP_KEYS.SIGN_IN.ROOT} component={SignInContainer} />
-      <Route path={APP_KEYS.SIGN_UP.ROOT} component={SignUpContainer} />
+      <Route path={APP_KEYS.SIGN_IN_KEYS.ROOT} component={SignInContainer} />
+      <Route path={APP_KEYS.SIGN_UP_KEYS.ROOT} component={SignUpContainer} />
     </Switch>
   </Router>
 );
