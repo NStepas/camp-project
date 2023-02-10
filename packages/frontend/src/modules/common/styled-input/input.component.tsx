@@ -4,14 +4,16 @@ export interface IStyledInputProps {
   name: string;
   label: string;
   formik?: any;
+  type?: string;
 }
 
-export const StyledInput = ({ name, label, formik }: IStyledInputProps) => {
+export const StyledInput = ({ name, label, formik, type }: IStyledInputProps) => {
   return (
     <TextFieldWrapper
       id={name}
       name={name}
       label={label}
+      type={type}
       variant="outlined"
       autoFocus={true}
       value={formik.values[name]}

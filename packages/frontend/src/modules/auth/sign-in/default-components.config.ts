@@ -7,6 +7,7 @@ export const componentsConfig: IStyledInputProps[] = [
   },
   {
     name: 'password',
-    label: 'Password'
+    label: 'Password',
+    type: 'password'
   }
 ];

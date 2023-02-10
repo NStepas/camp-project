@@ -53,7 +53,7 @@ export const NavBar = () => {
           </Typography>
           <InsertPhotoOutlinedIcon />
           {navbarButton.map((input) => {
-            <StyledButton {...input} />;
+            <StyledButton {...input} key={Math.random()} />;
           })}
           <Button onClick={onLogoutHandler}>Logout</Button>
           <Box sx={{ flexGrow: 0 }}>hell</Box>

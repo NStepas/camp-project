@@ -1,22 +1,34 @@
-import { Link } from 'react-router-dom';
-import { useMutation, useQueryClient } from 'react-query';
-import { Card, CardActions, Typography, Button } from '@mui/material';
+import { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { Card, CardActions, Typography, Alert, Snackbar } from '@mui/material';
 import { Container, Stack } from '@mui/system';
 import { useFormik } from 'formik';
 
+import { signInFn } from '../servises/auth.api';
 import { validate } from './form-validation';
 import { initialSignInValue } from '../constants/form-validation-constants';
-import { signIn } from '../servises/auth.api';
-import { ISignIn } from '../../common/interfaces/auth.interface';
-import { COLORS } from '../../theme/colors.const';
+import { ISignIn, ISignInResponse } from '../../common/interfaces/auth.interface';
+
 import { componentsConfig } from './default-components.config';
 import { StyledInput } from '../../common/styled-input';
 
-export const SignInContainer = () => {
-  const queryClient = useQueryClient();
+import { COLORS } from '../../theme/colors.const';
+import { SignInButton } from '../../common/styled-button/default-components.config';
+import { StyledButton } from '../../common/styled-button';
+import {
+  CardActionStyles,
+  StyledAuthCard,
+  StyledAuthContainer
+} from '../../common/constants/styled-component.constants';
+import { ErrorSnackbar } from '../../common/components/error-snackbar/error-snackbar.component';
 
-  const handleSubmit = (value: ISignIn) => {
-    console.log(value);
+export const SignInContainer = () => {
+  const [userError, setUserError] = useState('');
+  const [open, setOpen] = useState(false);
+  const history = useHistory();
+
+  const handleSubmit = async (value: ISignIn) => {
     signInMutation.mutate(value);
   };
 
@@ -26,25 +38,32 @@ export const SignInContainer = () => {
     onSubmit: handleSubmit
   });
 
-  const signInMutation = useMutation(signIn, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('signInData');
+  const signInMutation = useMutation('/sign-up', (user: ISignIn) => signInFn(user), {
+    onSuccess: async (data: ISignInResponse) => {
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          name: data.name,
+          token: data.jwtToken
+        })
+      );
+      const localStorageData = JSON.parse(localStorage.getItem('user') || '{}');
+      localStorageData.token ? history.push('/') : null;
+    },
+    onError: (data: any) => {
+      setUserError(data.response.data.message);
+      setOpen(true);
     }
-  });
+  } as ISignInResponse | any);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
-    <Container
-      sx={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-    >
+    <Container sx={StyledAuthContainer}>
       <form onSubmit={formik.handleSubmit}>
-        <Card
-          sx={{
-            width: '25rem',
-            justifyContent: 'center',
-            border: 'none',
-            boxShadow: 'none'
-          }}
-        >
+        <Card sx={StyledAuthCard}>
           <Typography gutterBottom variant="h5" component="div">
             Sign In
           </Typography>
@@ -53,35 +72,32 @@ export const SignInContainer = () => {
               <StyledInput {...input} key={input.name} formik={formik} />
             ))}
 
-            <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <CardActions sx={CardActionStyles}>
               <div>
                 <div>
-                  <p style={{ color: `${COLORS.grey}` }}>Need an account?</p>
+                  <p style={{ color: `${COLORS.mithril}` }}>Need an account?</p>
                   <Link to="/sign-up" style={{ color: `${COLORS.indigo}` }}>
                     Sign Up
                   </Link>
                 </div>
               </div>
               <CardActions>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  size="small"
-                  sx={{
-                    backgroundColor: `${COLORS.indigo}`,
-                    display: 'flex',
-                    flexDirection: 'row-reverse',
-                    width: '10rem',
-                    borderRadius: '1.5rem'
-                  }}
-                >
-                  LOGIN
-                </Button>
+                {SignInButton.map((input) => (
+                  <StyledButton {...input} key={Math.random()}></StyledButton>
+                ))}
               </CardActions>
             </CardActions>
           </Stack>
         </Card>
       </form>
+      {userError ? (
+        <ErrorSnackbar
+          open={open}
+          onClose={handleClose}
+          onClick={handleClose}
+          errorMessage={userError}
+        />
+      ) : null}
     </Container>
   );
 };

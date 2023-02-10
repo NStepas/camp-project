@@ -1,25 +1,32 @@
-import { Link } from 'react-router-dom';
-import { useMutation, useQueryClient } from 'react-query';
-import { Card, CardActions, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { Alert, Card, CardActions, Snackbar, Typography } from '@mui/material';
 import { Container, Stack } from '@mui/system';
 import { useFormik } from 'formik';
 
 import { validate } from './form-validation';
 import { initialSignUpValue } from '../constants/form-validation-constants';
-import { signUp } from '../servises/auth.api';
-import { ISignUp } from '../../common/interfaces/auth.interface';
+import { signUpFn } from '../servises/auth.api';
+import { ISignUp, ISignUpResponse } from '../../common/interfaces/auth.interface';
 import { COLORS } from '../../theme/colors.const';
 import { componentsConfig } from './default-components.config';
 import { StyledInput } from '../../common/styled-input';
 import { StyledButton } from '../../common/styled-button';
 import { SignUpButton } from '../../common/styled-button/default-components.config';
-import { useState } from 'react';
+import {
+  CardActionStyles,
+  StyledAuthCard,
+  StyledAuthContainer
+} from '../../common/constants/styled-component.constants';
+import { ErrorSnackbar } from '../../common/components/error-snackbar/error-snackbar.component';
 
 export const SignUpContainer = () => {
-  const queryClient = useQueryClient();
+  const [userError, setUserError] = useState('');
+  const [open, setOpen] = useState(false);
+  const history = useHistory();
 
-  const handleSubmit = (value: ISignUp) => {
-    console.log(value);
+  const handleSubmit = async (value: ISignUp) => {
     signInMutation.mutate(value);
   };
 
@@ -29,26 +36,32 @@ export const SignUpContainer = () => {
     onSubmit: handleSubmit
   });
 
-  const signInMutation = useMutation(signUp, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('signUpData');
-      // queryClient.setQueryData(['posts', data], data);
+  const signInMutation = useMutation('/sign-up', (user: ISignUp) => signUpFn(user), {
+    onSuccess: async (data: ISignUpResponse) => {
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          name: data.name,
+          token: data.jwtToken
+        })
+      );
+      const localStorageData = JSON.parse(localStorage.getItem('user') || '{}');
+      localStorageData.token ? history.push('/') : null;
+    },
+    onError: (data: any) => {
+      setUserError(data.response.data.message);
+      setOpen(true);
     }
-  });
+  } as ISignUpResponse | any);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
-    <Container
-      sx={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-    >
+    <Container sx={StyledAuthContainer}>
       <form onSubmit={formik.handleSubmit}>
-        <Card
-          sx={{
-            width: '25rem',
-            justifyContent: 'center',
-            border: 'none',
-            boxShadow: 'none'
-          }}
-        >
+        <Card sx={StyledAuthCard}>
           <Typography gutterBottom variant="h5" component="div">
             Sign Up
           </Typography>
@@ -57,10 +70,10 @@ export const SignUpContainer = () => {
               <StyledInput {...input} key={input.name} formik={formik} />
             ))}
 
-            <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <CardActions sx={CardActionStyles}>
               <div>
                 <div>
-                  <Typography style={{ color: `${COLORS.grey}` }}>Already a member?</Typography>
+                  <Typography style={{ color: `${COLORS.mithril}` }}>Already a member?</Typography>
                   <Link to="/sign-in" style={{ color: `${COLORS.indigo}` }}>
                     Sign In
                   </Link>
@@ -68,13 +81,22 @@ export const SignUpContainer = () => {
               </div>
               <CardActions>
                 {SignUpButton.map((input) => (
-                  <StyledButton {...input}></StyledButton>
+                  <StyledButton {...input} key={Math.random()}></StyledButton>
                 ))}
               </CardActions>
             </CardActions>
           </Stack>
         </Card>
       </form>
+
+      {userError ? (
+        <ErrorSnackbar
+          open={open}
+          onClose={handleClose}
+          onClick={handleClose}
+          errorMessage={userError}
+        />
+      ) : null}
     </Container>
   );
 };

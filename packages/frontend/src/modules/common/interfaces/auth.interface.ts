@@ -9,15 +9,18 @@ export interface ISignUp {
   password: string;
 }
 
-export interface ISignInResponce {
-  data: { email: string; name: string };
+export interface ISignInResponse {
+  id: string;
+  email: string;
+  name: string;
   jwtToken: string;
   message?: string;
   status?: string;
 }
 
-export interface ISignUpResponce {
-  data: { email: string; name: string };
+export interface ISignUpResponse {
+  email: string;
+  name: string;
   jwtToken: string;
   message?: string;
   status?: string;

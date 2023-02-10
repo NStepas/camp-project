@@ -22,7 +22,6 @@ export class UserController {
         );
       }
       const user = await this.userService.createUser(req.body, bcryptedPassword);
-      console.log(user);
 
       if (!user) {
         return errorHandler(
@@ -35,9 +34,13 @@ export class UserController {
       if (!jwtToken) {
         return errorHandler(StatusCodes.UNAUTHORIZED, 'Cannot provide access token', res);
       }
-      return res.json({ id: user._id, name: user.name, emai: user.email, jwtToken });
+      return res.json({ id: user._id, name: user.name, email: user.email, jwtToken });
     } catch (e) {
-      res.send('Error!');
+      return errorHandler(
+        StatusCodes.BAD_REQUEST,
+        'Name/email already exist in database, please try another one',
+        res
+      );
     }
   };
 

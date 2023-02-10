@@ -16,5 +16,6 @@ const userSchema = new Schema<{ name: string; email: string; password: string }>
     requried: true
   }
 });
+userSchema.set('timestamps', true);
 
 export const User = model<{ name: string; email: string; password: string }>('User', userSchema);

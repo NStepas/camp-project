@@ -5,5 +5,6 @@ export const COLORS = {
   navbar: '#3E619B',
   main: '#F5F5F5',
   indigo: '#7579E7',
-  grey: '#F1F5F8'
+  grey: '#F1F5F8',
+  mithril: '#878787'
 };

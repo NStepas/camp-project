@@ -9,7 +9,7 @@ export interface IStyledButtonProps {
   onClick?: any;
 }
 
-export const StyledButton = ({ variant, type, size, label, onClick }: IStyledButtonProps) => {
+export const StyledButton = ({ variant, type, size, label }: IStyledButtonProps) => {
   return (
     <ButtonWrraper variant={variant} type={type} size={size}>
       {label}

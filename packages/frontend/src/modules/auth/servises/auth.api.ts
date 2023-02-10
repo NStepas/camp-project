@@ -1,8 +1,8 @@
 import {
   ISignUp,
   ISignIn,
-  ISignInResponce,
-  ISignUpResponce,
+  ISignInResponse,
+  ISignUpResponse,
   GenericResponse,
   IUserResponse
 } from './../../common/interfaces/auth.interface';
@@ -18,15 +18,13 @@ authApi.defaults.headers.common['Content-Type'] = 'application/json';
 //   return response.data;
 // };
 
-export const signIn = async (signInData: ISignIn) => {
-  console.log(signInData);
-  const response = await authApi.post<ISignInResponce>('/user/signIn', signInData);
+export const signInFn = async (signInData: ISignIn) => {
+  const response = await authApi.post<ISignInResponse>('/user/signIn', signInData);
   return response.data;
 };
 
-export const signUp = async (signUpData: ISignUp) => {
-  console.log(signUpData);
-  const response = await authApi.post<ISignUpResponce>('/user/signUp', signUpData);
+export const signUpFn = async (signUpData: ISignUp) => {
+  const response = await authApi.post<ISignUpResponse>('/user/signUp', signUpData);
   return response.data;
 };
 

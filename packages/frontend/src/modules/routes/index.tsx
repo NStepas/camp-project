@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { APP_KEYS } from '../common/consts';
+import { APP_KEYS } from '../common/constants';
 import { SignInContainer } from '../auth/sign-in';
 import { SignUpContainer } from '../auth/sign-up';
 import { PrivateRoute } from './privateRoute';
