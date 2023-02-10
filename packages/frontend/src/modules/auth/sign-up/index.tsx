@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { Card, CardActions, Typography } from '@mui/material';
 import { Container, Stack } from '@mui/system';
 import { useFormik } from 'formik';
@@ -31,7 +31,7 @@ export const SignUpContainer = () => {
 
   const signInMutation = useMutation(signUp, {
     onSuccess: () => {
-      queryClient.invalidateQueries('signUpData' as any);
+      queryClient.invalidateQueries('signUpData');
       // queryClient.setQueryData(['posts', data], data);
     }
   });
