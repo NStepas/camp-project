@@ -28,14 +28,6 @@ export const ROUTER_KEYS = {
   AUTHORIZED: 'authorized'
 };
 
-export const SIGN_IN_KEYS = {
-  ROOT: '/sign-in',
-  HOME: 'sign-in',
-  AUTHORIZED: 'not-authorized'
-};
+export const SIGN_IN_KEY = '/sign-in';
 
-export const SIGN_UP_KEYS = {
-  ROOT: '/sign-up',
-  HOME: 'sign-up',
-  AUTHORIZED: 'not-authorized'
-};
+export const SIGN_UP_KEY = '/sign-up';

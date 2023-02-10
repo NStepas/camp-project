@@ -1,48 +1,35 @@
+import { StatusCodes } from 'http-status-codes';
 import bodyParser from 'body-parser';
 import express from 'express';
 import 'dotenv/config';
+import cors from 'cors';
+import passport from 'passport';
 
-import { graphqlHTTP } from 'express-graphql';
-import { buildSchema } from 'graphql';
-import axios from 'axios';
 import AppRouter from './routes';
 import connectDB from './config/database';
+import { errorHandler } from './middlwares/error-handler';
+
+import { jwtStrategy, anonymousStrategy } from './middlwares/passport.middleware';
 
 const app = express();
+
+app.use(passport.initialize());
+passport.use(jwtStrategy);
+passport.use(anonymousStrategy);
+
 const router = new AppRouter(app);
 
 // Express configuration
 app.set('port', process.env.PORT || 4200);
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 router.init();
 
-// TODO: Move that to model GraphQL
-const schema = buildSchema(`
-  type Query {
-    todos: String
-  }
-`);
-
-// TODO: Create graphQL controller
-const rootValue = {
-  todos: async () => {
-    // TODO: Create http service for that
-    const todos = await axios.get('http://localhost:5000/api/todos');
-    return todos.data;
-  }
-};
-
-// TODO: Move that to router init function ONLY AFTER MAIN PART OF APP
-app.use(
-  '/graphql',
-  graphqlHTTP({
-    schema,
-    rootValue,
-    graphiql: true
-  })
-);
+app.use((_req, _res) => {
+  errorHandler(StatusCodes.NOT_FOUND, 'Not found', _res);
+});
 
 const port = app.get('port');
 

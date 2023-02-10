@@ -2,9 +2,8 @@
 export const COLORS = {
   white: '#ffffff',
   black: '#2B2B2B',
-  primary: '#bbb2e9',
-  secondary: '#808080',
+  navbar: '#3E619B',
+  main: '#F5F5F5',
   indigo: '#7579E7',
-  grey: '#b0bec5',
-  lightgrey: '#F1F5F8'
+  grey: '#F1F5F8'
 };

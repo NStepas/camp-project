@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import passport from 'passport';
 
 import UserController from '../../controllers/user.controller';
 
@@ -10,5 +11,9 @@ const router: Router = Router();
 router.post('/signUp', UserController.signUp);
 
 router.post('/signIn', UserController.signIn);
+
+router.get('/me', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  res.send(req.user);
+});
 
 export default router;

@@ -4,13 +4,7 @@ import {
   PASSWORD_MIN_ERROR,
   PASSWORD_MAX_ERROR,
   EMAIL_ERROR
-} from '../../common/consts/validation.const';
-
-const initialValues = {
-  name: '',
-  email: '',
-  password: ''
-};
+} from '../../auth/constants/form-validation-constants';
 
 const validate = Yup.object({
   name: Yup.string().required(IS_REQUIRED),
@@ -21,4 +15,4 @@ const validate = Yup.object({
     .max(16, PASSWORD_MAX_ERROR)
 });
 
-export { initialValues, validate };
+export { validate };
