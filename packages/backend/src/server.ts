@@ -1,15 +1,15 @@
-import { StatusCodes } from 'http-status-codes';
-import bodyParser from 'body-parser';
 import express from 'express';
 import 'dotenv/config';
+import bodyParser from 'body-parser';
 import cors from 'cors';
 import passport from 'passport';
 
-import AppRouter from './routes';
 import connectDB from './config/database';
+import AppRouter from './routes';
+import { StatusCodes } from 'http-status-codes';
 import { errorHandler } from './middlwares/error-handler';
-
 import { jwtStrategy, anonymousStrategy } from './middlwares/passport.middleware';
+import { SERVER_ERROR } from './shared/consts/error.constants';
 
 const app = express();
 
@@ -19,8 +19,6 @@ passport.use(anonymousStrategy);
 
 const router = new AppRouter(app);
 
-// Express configuration
-app.set('port', process.env.PORT || 4200);
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,14 +26,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 router.init();
 
 app.use((_req, _res) => {
-  errorHandler(StatusCodes.NOT_FOUND, 'Not found', _res);
+  errorHandler(StatusCodes.NOT_FOUND, SERVER_ERROR.NOT_FOUND, _res);
 });
 
-const port = app.get('port');
+const PORT = process.env.PORT;
 
-const server = app.listen(port, async () => {
+export const server = app.listen(PORT, async () => {
   await connectDB();
-  console.log(`Server started on port ${port}`);
+  console.log(`Server started on port ${PORT}`);
 });
-
-export default server;

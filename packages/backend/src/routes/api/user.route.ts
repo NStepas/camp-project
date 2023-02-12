@@ -1,19 +1,12 @@
-import { Router, Request, Response } from 'express';
-import passport from 'passport';
+import { SIGN_IN_ROUTE, SIGN_UP_ROUTE } from '../../shared/consts/routes.constants';
+import { Router } from 'express';
 
 import UserController from '../../controllers/user.controller';
 
 const router: Router = Router();
 
-// @route   POST api/user
-// @desc    Register user given their email and password, returns the token upon successful registration
-// @access  Public
-router.post('/signUp', UserController.signUp);
+router.post(SIGN_UP_ROUTE, UserController.signUp);
 
-router.post('/signIn', UserController.signIn);
-
-router.get('/me', passport.authenticate('jwt', { session: false }), async (req, res) => {
-  res.send(req.user);
-});
+router.post(SIGN_IN_ROUTE, UserController.signIn);
 
 export default router;

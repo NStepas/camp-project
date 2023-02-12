@@ -1,33 +1,51 @@
 import React from 'react';
-import { Grid, Paper, Box } from '@mui/material';
-import { NavBar } from '../common/components/navbar';
+import { Grid, Box, Card } from '@mui/material';
 
-// export const Item = styled(Paper)(({ theme }) => ({
-//   backgroundColor: 'dark',
-//   ...theme.typography.body2,
-//   padding: theme.spacing(1),
-//   textAlign: 'center',
-//   color: theme.palette.text.secondary
-// }));
+import { NavBar } from '../common/components/navbar';
+import { StyledCardButton } from '../common/components/card-button';
+import { columnButton } from '../common/constants/button-component-config';
+
+import { COLORS } from '../theme';
+import { StyledColumn } from '../common/components/main-column';
+import { MainColumn } from '../columns/column';
+import { Container } from '@mui/system';
 
 export const HomePageContainer = () => {
+  // const theme = createTheme as any({
+  //   overrides: {
+  //     MuiCssBaseline: {
+  //       '@global': {
+  //         '*::-webkit-scrollbar': {
+  //           width: '5px'
+  //         },
+  //         '*::-webkit-scrollbar-track': {
+  //           background: '#E4EFEF'
+  //         },
+  //         '*::-webkit-scrollbar-thumb': {
+  //           background: '#1D388F61',
+  //           borderRadius: '2px'
+  //         }
+  //       }
+  //     }
+  //   }
+  // })
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, backgroundColor: `${COLORS.main}`, height: '100vh' }}>
       <NavBar />
-      <Grid container spacing={3}>
-        <Grid item xs={1} md={3}>
-          <Paper>xs=6 md=8</Paper>
+      <Container>
+        <Grid container spacing={3} sx={{ margin: '0', flexWrap: 'nowrap' }}>
+          {/* <Grid item xs={1} md={3}> */}
+          <MainColumn />
+          {/* </Grid> */}
+          <Grid item>
+            <Card sx={{ padding: '0.5rem' }}>
+              {columnButton.map((input, index) => (
+                <StyledCardButton {...input} key={index}></StyledCardButton>
+              ))}
+            </Card>
+          </Grid>
         </Grid>
-        <Grid item xs={1} md={3}>
-          <Paper>xs=6 md=4</Paper>
-        </Grid>
-        <Grid item xs={1} md={3}>
-          <Paper>xs=6 md=4</Paper>
-        </Grid>
-        <Grid item xs={1} md={3}>
-          <Paper>xs=6 md=8</Paper>
-        </Grid>
-      </Grid>
+      </Container>
     </Box>
   );
 };

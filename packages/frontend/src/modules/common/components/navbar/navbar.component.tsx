@@ -1,39 +1,26 @@
-import * as React from 'react';
+import { useHistory } from 'react-router-dom';
 import { Container, Toolbar, Typography, Box, Button } from '@mui/material';
-import { MyNavBar } from '.';
 import InsertPhotoOutlinedIcon from '@mui/icons-material/InsertPhotoOutlined';
-import { StyledButton } from '../../styled-button';
-import { navbarButton } from '../../styled-button/default-components.config';
-import { useMutation } from 'react-query';
-import { logoutUserFn } from '../../../auth/servises/auth.api';
+
+import { MyNavBar } from '.';
+import { StyledButton } from '../button-component';
+
+import { localStorageUserData } from '../../services/main.services';
+import { navbarButton } from '../../constants/button-component-config';
+import { SIGN_IN_KEY } from '../../constants/app-keys.const';
 
 export const NavBar = () => {
-  const { mutate: logoutUser, isLoading } = useMutation(async () => await logoutUserFn(), {
-    onSuccess: (data) => {
-      window.location.href = '/login';
-    },
-    onError: (error: any) => {
-      if (Array.isArray(error.response.data.error)) {
-        error.data.error.forEach((el: any) =>
-          error(el.message, {
-            position: 'top-right'
-          })
-        );
-      } else {
-        error(error.response.data.message, {
-          position: 'top-right'
-        });
-      }
-    }
-  });
+  const history = useHistory();
 
   const onLogoutHandler = async () => {
-    logoutUser();
+    const localStorageData = await JSON.parse(localStorageUserData);
+    !localStorageData.token && history.push(SIGN_IN_KEY);
   };
+
   return (
     <MyNavBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
+      <Container maxWidth="xl" sx={{ height: '3rem' }}>
+        <Toolbar disableGutters sx={{ minHeight: '0rem' }}>
           <Typography
             variant="h5"
             noWrap
@@ -41,9 +28,9 @@ export const NavBar = () => {
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
+              flexGrow: 4,
               fontFamily: 'monospace',
-              fontWeight: 700,
+              fontWeight: 600,
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none'
@@ -52,9 +39,11 @@ export const NavBar = () => {
             LOGO
           </Typography>
           <InsertPhotoOutlinedIcon />
-          {navbarButton.map((input) => {
-            <StyledButton {...input} key={Math.random()} />;
+
+          {navbarButton.map((input, index) => {
+            <StyledButton {...input} key={index} />;
           })}
+
           <Button onClick={onLogoutHandler}>Logout</Button>
           <Box sx={{ flexGrow: 0 }}>hell</Box>
         </Toolbar>

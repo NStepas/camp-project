@@ -1,34 +1,44 @@
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { Card, CardActions, Typography, Alert, Snackbar } from '@mui/material';
+import { Card, CardActions, Typography } from '@mui/material';
 import { Container, Stack } from '@mui/system';
 import { useFormik } from 'formik';
 
-import { signInFn } from '../servises/auth.api';
-import { validate } from './form-validation';
-import { initialSignInValue } from '../constants/form-validation-constants';
-import { ISignIn, ISignInResponse } from '../../common/interfaces/auth.interface';
+import { signInFn } from '../servises/auth.services';
+import { validate } from '../validation/signin-validation';
+import { initialSignInValue } from '../../common/constants/form-validation-constants';
+import { ISignInResponse, ISignInUser } from '../../common/types/auth.interface';
 
-import { componentsConfig } from './default-components.config';
-import { StyledInput } from '../../common/styled-input';
+import { StyledInput } from '../../common/components/auth-input';
+import { ErrorSnackbar } from '../../common/components/error-snackbar/error-snackbar.component';
+import { SignInButton } from '../../common/constants/button-component-config';
+import { StyledButton } from '../../common/components/button-component';
 
-import { COLORS } from '../../theme/colors.const';
-import { SignInButton } from '../../common/styled-button/default-components.config';
-import { StyledButton } from '../../common/styled-button';
+import { LocalStorageActions } from '../validation/local-storage.actions';
+import { localStorageUserData } from '../../common/services/main.services';
+import { SignInComponentsConfig } from '../../common/constants/auth-components-config';
 import {
   CardActionStyles,
   StyledAuthCard,
   StyledAuthContainer
 } from '../../common/constants/styled-component.constants';
-import { ErrorSnackbar } from '../../common/components/error-snackbar/error-snackbar.component';
+import {
+  ROUTER_KEYS,
+  SIGN_IN_KEY,
+  SIGN_UP_KEY,
+  USER_QUERY_KEY
+} from '../../common/constants/app-keys.const';
+
+import { COLORS } from '../../theme/colors.const';
 
 export const SignInContainer = () => {
   const [userError, setUserError] = useState('');
   const [open, setOpen] = useState(false);
+
   const history = useHistory();
 
-  const handleSubmit = async (value: ISignIn) => {
+  const handleSubmit = async (value: ISignInUser) => {
     signInMutation.mutate(value);
   };
 
@@ -38,20 +48,16 @@ export const SignInContainer = () => {
     onSubmit: handleSubmit
   });
 
-  const signInMutation = useMutation('/sign-up', (user: ISignIn) => signInFn(user), {
+  const signInMutation = useMutation(SIGN_IN_KEY, (user: ISignInUser) => signInFn(user), {
+    USER_QUERY_KEY,
     onSuccess: async (data: ISignInResponse) => {
-      localStorage.setItem(
-        'user',
-        JSON.stringify({
-          name: data.name,
-          token: data.jwtToken
-        })
-      );
-      const localStorageData = JSON.parse(localStorage.getItem('user') || '{}');
-      localStorageData.token ? history.push('/') : null;
+      LocalStorageActions(data as any);
+      const localStorageData = JSON.parse(localStorageUserData);
+      localStorageData.token && history.push(ROUTER_KEYS.ROOT);
     },
+
     onError: (data: any) => {
-      setUserError(data.response.data.message);
+      setUserError(data.response?.data?.message);
       setOpen(true);
     }
   } as ISignInResponse | any);
@@ -68,7 +74,7 @@ export const SignInContainer = () => {
             Sign In
           </Typography>
           <Stack spacing={2} sx={{ mt: '3rem' }}>
-            {componentsConfig.map((input) => (
+            {SignInComponentsConfig.map((input) => (
               <StyledInput {...input} key={input.name} formik={formik} />
             ))}
 
@@ -76,28 +82,29 @@ export const SignInContainer = () => {
               <div>
                 <div>
                   <p style={{ color: `${COLORS.mithril}` }}>Need an account?</p>
-                  <Link to="/sign-up" style={{ color: `${COLORS.indigo}` }}>
+                  <Link to={SIGN_UP_KEY} style={{ color: `${COLORS.indigo}` }}>
                     Sign Up
                   </Link>
                 </div>
               </div>
               <CardActions>
-                {SignInButton.map((input) => (
-                  <StyledButton {...input} key={Math.random()}></StyledButton>
+                {SignInButton.map((input, index) => (
+                  <StyledButton {...input} key={index}></StyledButton>
                 ))}
               </CardActions>
             </CardActions>
           </Stack>
         </Card>
       </form>
-      {userError ? (
+
+      {userError && (
         <ErrorSnackbar
           open={open}
           onClose={handleClose}
           onClick={handleClose}
           errorMessage={userError}
         />
-      ) : null}
+      )}
     </Container>
   );
 };

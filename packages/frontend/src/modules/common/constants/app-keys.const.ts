@@ -1,6 +1,6 @@
 // Local storage keys
 export const STORAGE_KEYS = {
-  ADDRESS: 'ADDRESS',
+  USER_ADDRESS: 'user',
   TOKEN: 'TOKEN'
 };
 
@@ -31,3 +31,7 @@ export const ROUTER_KEYS = {
 export const SIGN_IN_KEY = '/sign-in';
 
 export const SIGN_UP_KEY = '/sign-up';
+
+export const USER_QUERY_KEY = 'user';
+
+export const COLUMN_QUERY_KEY = 'column';

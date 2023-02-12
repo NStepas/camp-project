@@ -1,11 +1,9 @@
 import { User } from './../models/User';
+export interface ICreateUser {
+  payload: { name: string; password: string; email: string };
+  bcryptedPassword: string;
+}
 export default class UserService {
-  async findAll() {
-    return 'Users';
-  }
-
-  // todo create normal interface
-
   async createUser(
     payload: { name: string; password: string; email: string },
     bcryptedPassword: string

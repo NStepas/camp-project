@@ -1,9 +1,9 @@
 import { Alert, Snackbar } from '@mui/material';
 
 interface IErrorSnackbarProps {
-  onClose: any;
+  onClose?: React.ChangeEventHandler<HTMLInputElement>;
   open: any;
-  onClick: any;
+  onClick: React.MouseEventHandler<HTMLDivElement>;
   errorMessage: string;
 }
 
