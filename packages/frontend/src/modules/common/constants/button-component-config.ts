@@ -1,4 +1,5 @@
 import { IStyledButtonProps } from '../components/button-component/button.component';
+import { localStorageUserData } from '../services/main.services';
 
 export const SignUpButton: IStyledButtonProps[] = [
   {
@@ -17,20 +18,31 @@ export const SignInButton: IStyledButtonProps[] = [
   }
 ];
 
-export const navbarButton: IStyledButtonProps[] = [
-  { variant: 'contained', type: 'submit', size: 'small', label: '{ user }' },
+const localStorageData = JSON.parse(localStorageUserData);
+const userName = localStorageData.name;
+
+export const NavbarButton: IStyledButtonProps[] = [
+  { variant: 'contained', type: 'submit', size: 'small', label: userName, disabled: true },
   {
     variant: 'contained',
     type: 'submit',
     size: 'small',
     label: 'LOGOUT'
-    // onClick: onLogoutHandler()
   }
 ];
 
-export const columnButton: IStyledButtonProps[] = [
-  { variant: 'text', type: 'submit', size: 'large', label: '+ Add new column' }
+export const ColumnButton: IStyledButtonProps[] = [
+  { variant: 'text', type: 'submit', size: 'small', label: '+ Add new column' }
 ];
-export const cardButton: IStyledButtonProps[] = [
-  { variant: 'text', type: 'submit', size: 'large', label: '+ Add new card' }
+
+export const CreateColumnButton: IStyledButtonProps[] = [
+  { variant: 'contained', type: 'submit', size: 'small', label: 'Add column' }
+];
+
+export const CardButton: IStyledButtonProps[] = [
+  { variant: 'text', type: 'submit', size: 'small', label: '+ Add new card' }
+];
+
+export const CreateCardButton: IStyledButtonProps[] = [
+  { variant: 'contained', type: 'submit', size: 'small', label: 'Add card' }
 ];

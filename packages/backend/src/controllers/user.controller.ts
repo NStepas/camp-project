@@ -14,10 +14,12 @@ export class UserController {
   signUp = async (req: Request, res: Response) => {
     try {
       const { password } = req.body;
+
       const bcryptedPassword = await this.authService.bcryptPassword(password);
       if (!bcryptedPassword) {
         return errorHandler(StatusCodes.BAD_GATEWAY, AUTH_ERRORS.WRONG_AUTH_DATA, res);
       }
+
       const user = await this.userService.createUser(req.body, bcryptedPassword);
 
       if (!user) {

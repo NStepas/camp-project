@@ -7,14 +7,18 @@ export default class ColumnService {
   }
 
   async getAllColumns() {
-    return Column.find();
+    return Column.find().populate('cards');
   }
 
   async deleteColumn(columnName: string) {
     return Column.findOneAndDelete({ columnName: columnName });
   }
 
-  async updateColumn(payload: { columnName: string }, columnId: string) {
-    return Column.findByIdAndUpdate({ _id: columnId }, payload, { new: true });
+  async updateColumn(payload: { columnData: string }, columnId: string) {
+    return Column.findByIdAndUpdate(
+      { _id: columnId },
+      { columnName: payload.columnData },
+      { new: true }
+    );
   }
 }

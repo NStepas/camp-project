@@ -42,6 +42,7 @@ export const GlobalStyles = createGlobalStyle`
   #root{
     height: 100vh;
   }
+ 
 
   ul[class],
   ol[class] {

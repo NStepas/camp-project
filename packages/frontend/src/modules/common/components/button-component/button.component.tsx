@@ -1,16 +1,25 @@
 import { ButtonWrraper } from './button.styles';
 
 export interface IStyledButtonProps {
-  variant: any;
-  type: any;
-  size?: any;
+  variant: 'text' | 'outlined' | 'contained';
+  disabled?: boolean;
+  type: 'submit' | 'reset' | 'button';
+  size?: 'small' | 'medium' | 'large';
   label: string;
+
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export const StyledButton = ({ variant, type, size, label }: IStyledButtonProps) => {
+export const StyledButton = ({
+  variant,
+  type,
+  size,
+  label,
+  onClick,
+  disabled
+}: IStyledButtonProps) => {
   return (
-    <ButtonWrraper variant={variant} type={type} size={size}>
+    <ButtonWrraper variant={variant} type={type} size={size} onClick={onClick} disabled={disabled}>
       {label}
     </ButtonWrraper>
   );

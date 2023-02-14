@@ -3,8 +3,10 @@ import { TextField } from '@mui/material';
 import { COLORS } from '../../../theme';
 
 export const CardTextFieldWrapper = styled(TextField)`
-  boxsizing: border-box;
-  size: small;
-  backgroundcolor: ${COLORS.grey};
-  padding: 0rem;
+  overflow-y: 'scroll';
+  border: '1px solid red';
+  width: '500px';
+  float: 'left';
+  height: '500px';
+  position: 'relative';
 `;

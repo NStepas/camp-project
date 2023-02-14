@@ -33,7 +33,7 @@ import { COLORS } from '../../theme/colors.const';
 
 export const SignUpContainer = () => {
   const [userError, setUserError] = useState('');
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const history = useHistory();
 
@@ -51,19 +51,17 @@ export const SignUpContainer = () => {
     USER_QUERY_KEY,
     onSuccess: async (data: ISignUpResponse) => {
       LocalStorageActions(data as any);
-
-      const localStorageData = JSON.parse(localStorageUserData);
-      localStorageData.token && history.push(ROUTER_KEYS.ROOT);
+      history.push(ROUTER_KEYS.ROOT);
     },
 
     onError: (data: any) => {
       setUserError(data.response?.data?.message);
-      setOpen(true);
+      setIsOpen(true);
     }
   } as ISignUpResponse | any);
 
   const handleClose = () => {
-    setOpen(false);
+    setIsOpen(false);
   };
 
   return (

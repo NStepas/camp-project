@@ -16,7 +16,6 @@ import { SignInButton } from '../../common/constants/button-component-config';
 import { StyledButton } from '../../common/components/button-component';
 
 import { LocalStorageActions } from '../validation/local-storage.actions';
-import { localStorageUserData } from '../../common/services/main.services';
 import { SignInComponentsConfig } from '../../common/constants/auth-components-config';
 import {
   CardActionStyles,
@@ -34,7 +33,7 @@ import { COLORS } from '../../theme/colors.const';
 
 export const SignInContainer = () => {
   const [userError, setUserError] = useState('');
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const history = useHistory();
 
@@ -52,18 +51,17 @@ export const SignInContainer = () => {
     USER_QUERY_KEY,
     onSuccess: async (data: ISignInResponse) => {
       LocalStorageActions(data as any);
-      const localStorageData = JSON.parse(localStorageUserData);
-      localStorageData.token && history.push(ROUTER_KEYS.ROOT);
+      history.push(ROUTER_KEYS.ROOT);
     },
 
     onError: (data: any) => {
       setUserError(data.response?.data?.message);
-      setOpen(true);
+      setIsOpen(true);
     }
   } as ISignInResponse | any);
 
   const handleClose = () => {
-    setOpen(false);
+    setIsOpen(false);
   };
 
   return (
@@ -89,7 +87,7 @@ export const SignInContainer = () => {
               </div>
               <CardActions>
                 {SignInButton.map((input, index) => (
-                  <StyledButton {...input} key={index}></StyledButton>
+                  <StyledButton {...input} key={index} />
                 ))}
               </CardActions>
             </CardActions>

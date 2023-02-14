@@ -10,9 +10,8 @@ export const CardStyle = {
 };
 export const HeaderColumnStyle = {
   display: 'flex',
-  flexDirection: 'row',
+  flexDirection: 'column',
   justifyContent: 'space-between',
   alignItems: 'center',
   padding: '0'
-  // marginBottom: '1rem'
 };

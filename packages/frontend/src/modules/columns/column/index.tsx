@@ -1,18 +1,16 @@
-import { StyledColumn } from '../../common/components/main-column';
-import { useFormik } from 'formik';
-import { initialColumnValue } from '../../common/constants/form-validation-constants';
-import { validate } from '../validation/column-validation';
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { useMutation } from 'react-query';
 
-import { COLUMN_QUERY_KEY } from '../../common/constants/app-keys.const';
-import { useState } from 'react';
-import { IColumnResponse, IColumnUpdate } from '../../common/types/column.interface';
 import { Container } from '@mui/system';
-import { ErrorSnackbar } from '../../common/components/error-snackbar/error-snackbar.component';
-import { getColumnFn, updateColumnFn } from '../services/column.services';
-import { useEffect } from 'react';
-import { localStorageUserData } from '../../common/services/main.services';
 import { Grid } from '@mui/material';
+
+import { getColumnFn } from '../services/column.services';
+import { StyledColumn } from '../../common/components/main-column';
+import { COLUMN_QUERY_KEY } from '../../common/constants/app-keys.const';
+import { IColumnResponse } from '../../common/types/column.interface';
+import { ErrorSnackbar } from '../../common/components/error-snackbar/error-snackbar.component';
+import { localStorageUserData } from '../../common/services/main.services';
 
 export const MainColumn = () => {
   const [userError, setUserError] = useState('');
@@ -22,7 +20,7 @@ export const MainColumn = () => {
   const localStorageData = JSON.parse(localStorageUserData);
   const token = localStorageData.token;
 
-  const getColumnMutation = useMutation(COLUMN_QUERY_KEY, (token: string) => getColumnFn(token), {
+  const getColumnMutation = useMutation(COLUMN_QUERY_KEY, async () => await getColumnFn(), {
     COLUMN_QUERY_KEY,
     onSuccess: async (columnData: IColumnResponse[]) => {
       setColumnData(columnData);
@@ -38,22 +36,32 @@ export const MainColumn = () => {
     setIsOpen(false);
   };
 
-  useEffect(() => {
+  const onMount = async () => {
     getColumnMutation.mutate(token);
+  };
+
+  useEffect(() => {
+    onMount();
   }, []);
 
   return (
     <Container>
-      {/* <StyledColumn />; */}
-      {/* <form onSubmit={formik.handleSubmit} style={{ display: 'flex', flexDirection: 'row' }}> */}
-      {columnData.map((data: any) => {
-        return (
-          <Grid item>
-            <StyledColumn data={data} index={data._id} />
-          </Grid>
-        );
-      })}
-      {/* </form> */}
+      <Grid container spacing={3}>
+        {columnData.map((data: any, index) => {
+          return (
+            <Grid
+              item
+              xs={12}
+              md={4}
+              key={index}
+              sx={{ display: 'flex', justifyContent: 'center' }}
+            >
+              <StyledColumn data={data} index={data._id} key={index} />
+            </Grid>
+          );
+        })}
+      </Grid>
+
       {userError && (
         <ErrorSnackbar
           open={isOpen}

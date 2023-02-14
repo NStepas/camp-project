@@ -4,7 +4,7 @@ import { ObjectId } from 'mongoose';
 
 export default class AuthService {
   async bcryptPassword(userPassword: string) {
-    return process.env.SALT ? await bcrypt.hash(userPassword, process.env.SALT) : false;
+    return process.env.SALT ? await bcrypt.hash(userPassword, +process.env.SALT) : false;
   }
 
   async comparePassword(userPassword: string, hashedPassword: string) {

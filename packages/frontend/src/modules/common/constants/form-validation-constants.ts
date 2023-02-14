@@ -13,6 +13,10 @@ export const initialColumnValue = {
   name: ''
 };
 
+export const initialCardValue = {
+  name: ''
+};
+
 export const IS_REQUIRED = 'This field is requires';
 export const PASSWORD_MIN_ERROR = 'Password must be at least 5 characters';
 export const PASSWORD_MAX_ERROR = 'Password must contain less then 16 characters';

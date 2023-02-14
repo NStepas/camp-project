@@ -28,9 +28,17 @@ export const SERVER_ERROR = {
 };
 
 export const COLUMN_ERROR = {
-  THE_COLUMN_IS_ALREADY_EXIST: 'Failed to create cart, maybe card name already used',
-  FAILED_TO_GET_COLUMN: 'Failed to get card',
+  THE_COLUMN_IS_ALREADY_EXIST: 'Failed to create column, maybe column name already used',
+  FAILED_TO_GET_COLUMN: 'Failed to get column',
   FAILED_TO_DELETE_COLUMN: 'Failed to delete column',
-  FAILED_TO_UPDATE_COLUMN: 'Failed to update card, maybe card name already used',
-  FAILED_TO_CREATE_COLUMN: 'Failed to create card, please try again later'
+  FAILED_TO_UPDATE_COLUMN: 'Failed to update column, maybe column name already used',
+  FAILED_TO_CREATE_COLUMN: 'Failed to create column, please try again later'
+};
+
+export const CARD_ERROR = {
+  THE_CARD_IS_ALREADY_EXIST: 'Failed to create cart, maybe card name already used',
+  FAILED_TO_GET_CARD: 'Failed to get card',
+  FAILED_TO_DELETE_CARD: 'Failed to delete card',
+  FAILED_TO_UPDATE_CARD: 'Failed to update card, maybe card name already used',
+  FAILED_TO_CREATE_CARD: 'Failed to create card, please try again later'
 };

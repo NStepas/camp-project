@@ -1,50 +1,29 @@
 import React from 'react';
 import { Grid, Box, Card } from '@mui/material';
-
-import { NavBar } from '../common/components/navbar';
-import { StyledCardButton } from '../common/components/card-button';
-import { columnButton } from '../common/constants/button-component-config';
-
-import { COLORS } from '../theme';
-import { StyledColumn } from '../common/components/main-column';
-import { MainColumn } from '../columns/column';
 import { Container } from '@mui/system';
 
+import { NavBar } from '../common/components/navbar';
+import { MainColumn } from '../columns/column';
+import { CreateColumn } from '../common/components/column-input-create/create-column.components';
+
+import { HomeGridWrapper } from './home-page.styles';
+import { COLORS } from '../theme';
+
 export const HomePageContainer = () => {
-  // const theme = createTheme as any({
-  //   overrides: {
-  //     MuiCssBaseline: {
-  //       '@global': {
-  //         '*::-webkit-scrollbar': {
-  //           width: '5px'
-  //         },
-  //         '*::-webkit-scrollbar-track': {
-  //           background: '#E4EFEF'
-  //         },
-  //         '*::-webkit-scrollbar-thumb': {
-  //           background: '#1D388F61',
-  //           borderRadius: '2px'
-  //         }
-  //       }
-  //     }
-  //   }
-  // })
   return (
-    <Box sx={{ flexGrow: 1, backgroundColor: `${COLORS.main}`, height: '100vh' }}>
+    <Box sx={{ flexGrow: 1, backgroundColor: `${COLORS.main}` }}>
       <NavBar />
       <Container>
-        <Grid container spacing={3} sx={{ margin: '0', flexWrap: 'nowrap' }}>
-          {/* <Grid item xs={1} md={3}> */}
-          <MainColumn />
-          {/* </Grid> */}
-          <Grid item>
-            <Card sx={{ padding: '0.5rem' }}>
-              {columnButton.map((input, index) => (
-                <StyledCardButton {...input} key={index}></StyledCardButton>
-              ))}
+        <HomeGridWrapper container spacing={3}>
+          <Grid item xs={12} md={9}>
+            <MainColumn />
+          </Grid>
+          <Grid item xs={12} md={3} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Card sx={{ padding: '0.5rem', height: 'fit-content', width: '16rem' }}>
+              <CreateColumn />
             </Card>
           </Grid>
-        </Grid>
+        </HomeGridWrapper>
       </Container>
     </Box>
   );

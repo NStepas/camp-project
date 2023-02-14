@@ -35,3 +35,5 @@ export const SIGN_UP_KEY = '/sign-up';
 export const USER_QUERY_KEY = 'user';
 
 export const COLUMN_QUERY_KEY = 'column';
+
+export const CARD_QUERY_KEY = 'card';
