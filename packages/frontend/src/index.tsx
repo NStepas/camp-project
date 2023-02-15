@@ -4,6 +4,7 @@ import AppContainer from './modules/app';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import 'overlayscrollbars/overlayscrollbars.css';
 
 const queryClient = new QueryClient();
 

@@ -89,7 +89,7 @@ export const StyledCard = (props: IStyledInputProps | any) => {
   });
 
   return (
-    <Container sx={{ paddingBottom: '0.2rem', marginRight: '1rem' }}>
+    <Container sx={{ paddingBottom: '0.2rem', marginRight: '1rem', width: 'auto' }}>
       <form
         onSubmit={formik.handleSubmit}
         onChange={handleChange}

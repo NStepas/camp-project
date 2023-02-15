@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 
 import { CardActions, CardContent, Container } from '@mui/material';
@@ -15,11 +15,18 @@ import { validate } from '../../../auth/validation/signin-validation';
 import { COLUMN_QUERY_KEY } from '../../constants/app-keys.const';
 import { ButtonAtStart, HeaderColumnStyle } from '../../constants/card.styles';
 import { initialColumnValue } from '../../constants/form-validation-constants';
+import { useMatchMedia } from '../../../../hooks/use-match-media';
+import { useScrollbar } from '../../../../hooks/use-scrollbar';
 
 export const StyledColumn = (props: any) => {
   const [userError, setUserError] = useState('');
   const [columnData, setColumnData] = useState([]);
   const [value, setValue] = useState();
+  const { isMobile } = useMatchMedia();
+  const todoWrapper = useRef(null);
+
+  const hasScroll = isMobile && props.data.cards.length > 3;
+  useScrollbar(todoWrapper, hasScroll);
 
   const values = { name: value, columnId: props.data._id };
 
@@ -81,9 +88,17 @@ export const StyledColumn = (props: any) => {
           <Container
             sx={{ display: 'flex', flexDirection: 'column', margin: '0', paddingRight: '0.2rem' }}
           >
-            {props.data.cards.map((input: any, index: number) => (
-              <StyledCard {...input} key={index} />
-            ))}
+            <div
+              style={{
+                maxHeight: isMobile ? `6.5rem` : '100vh',
+                padding: 'none'
+              }}
+              ref={todoWrapper}
+            >
+              {props.data.cards.map((input: any, index: number) => (
+                <StyledCard {...input} key={index} />
+              ))}
+            </div>
           </Container>
         </CardContent>
         <CardActions disableSpacing sx={ButtonAtStart}>

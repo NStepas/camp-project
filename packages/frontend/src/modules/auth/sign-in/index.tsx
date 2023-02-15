@@ -13,7 +13,6 @@ import { ISignInResponse, ISignInUser } from '../../common/types/auth.interface'
 import { StyledInput } from '../../common/components/auth-input';
 import { ErrorSnackbar } from '../../common/components/error-snackbar/error-snackbar.component';
 import { SignInButton } from '../../common/constants/button-component-config';
-import { StyledButton } from '../../common/components/button-component';
 
 import { LocalStorageActions } from '../validation/local-storage.actions';
 import { SignInComponentsConfig } from '../../common/constants/auth-components-config';
@@ -30,6 +29,7 @@ import {
 } from '../../common/constants/app-keys.const';
 
 import { COLORS } from '../../theme/colors.const';
+import { AuthStyledButton } from '../auth-button-component';
 
 export const SignInContainer = () => {
   const [userError, setUserError] = useState('');
@@ -87,7 +87,7 @@ export const SignInContainer = () => {
               </div>
               <CardActions>
                 {SignInButton.map((input, index) => (
-                  <StyledButton {...input} key={index} />
+                  <AuthStyledButton {...input} key={index} />
                 ))}
               </CardActions>
             </CardActions>

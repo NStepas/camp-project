@@ -21,3 +21,15 @@ iframe {
   left: 125px;
   overflow: visible;
 }
+
+.App .os-theme-light > .os-scrollbar-vertical > .os-scrollbar-track > .os-scrollbar-handle {
+  max-width: 5px;
+  min-width: 5px;
+}
+
+.App .os-theme-light > .os-scrollbar-vertical {
+  background: rgb(221, 221, 221);
+  max-width: 7px;
+  padding: 1px;
+  border-radius: 15px;
+}

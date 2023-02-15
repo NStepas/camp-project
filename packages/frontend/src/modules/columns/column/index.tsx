@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 
@@ -11,11 +11,18 @@ import { COLUMN_QUERY_KEY } from '../../common/constants/app-keys.const';
 import { IColumnResponse } from '../../common/types/column.interface';
 import { ErrorSnackbar } from '../../common/components/error-snackbar/error-snackbar.component';
 import { localStorageUserData } from '../../common/services/main.services';
+import { useMatchMedia } from '../../../hooks/use-match-media';
+import { useScrollbar } from '../../../hooks/use-scrollbar';
 
 export const MainColumn = () => {
   const [userError, setUserError] = useState('');
   const [columnData, setColumnData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+
+  const { isMobile } = useMatchMedia();
+  const todoWrapper = useRef(null);
+  const hasScroll = isMobile || columnData.length > 3;
+  useScrollbar(todoWrapper, hasScroll);
 
   const localStorageData = JSON.parse(localStorageUserData);
   const token = localStorageData.token;
@@ -45,10 +52,28 @@ export const MainColumn = () => {
   }, []);
 
   return (
+    // <div style={{ width: hasScroll ? '220px' : null, maxHeight: '100%' }} ref={todoWrapper}>
+    // <OverlayScrollbarsComponent
+    //   style={{ width: '222px', height: '222px' }}
+    //   options={{
+    //     scrollbars: {
+    //       theme: 'os-theme-light',
+    //       visibility: 'auto',
+    //       autoHide: 'never'
+    //     }
+    //   }}
+    //   defer
+    // >
     <Container>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} sx={{ overflow: 'scroll' }}>
         {columnData.map((data: any, index) => {
           return (
+            // <Container
+            //   sx={{
+            //     display: 'flex',
+            //     flexDirection: 'column'
+            //   }}
+            // >
             <Grid
               item
               xs={12}
@@ -58,6 +83,7 @@ export const MainColumn = () => {
             >
               <StyledColumn data={data} index={data._id} key={index} />
             </Grid>
+            // </Container>
           );
         })}
       </Grid>
@@ -71,5 +97,6 @@ export const MainColumn = () => {
         />
       )}
     </Container>
+    // </div>
   );
 };

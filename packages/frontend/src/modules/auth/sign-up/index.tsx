@@ -7,11 +7,9 @@ import { useFormik } from 'formik';
 
 import { ErrorSnackbar } from '../../common/components/error-snackbar/error-snackbar.component';
 import { StyledInput } from '../../common/components/auth-input';
-import { StyledButton } from '../../common/components/button-component';
 import { SignUpButton } from '../../common/constants/button-component-config';
 
 import { LocalStorageActions } from '../validation/local-storage.actions';
-import { localStorageUserData } from '../../common/services/main.services';
 import { validate } from '../validation/signup-validation';
 import { initialSignUpValue } from '../../common/constants/form-validation-constants';
 import { signUpFn } from '../servises/auth.services';
@@ -30,6 +28,7 @@ import {
 } from '../../common/constants/app-keys.const';
 
 import { COLORS } from '../../theme/colors.const';
+import { AuthStyledButton } from '../auth-button-component';
 
 export const SignUpContainer = () => {
   const [userError, setUserError] = useState('');
@@ -87,7 +86,7 @@ export const SignUpContainer = () => {
               </div>
               <CardActions>
                 {SignUpButton.map((input, index) => (
-                  <StyledButton {...input} key={index}></StyledButton>
+                  <AuthStyledButton {...input} key={index}></AuthStyledButton>
                 ))}
               </CardActions>
             </CardActions>
