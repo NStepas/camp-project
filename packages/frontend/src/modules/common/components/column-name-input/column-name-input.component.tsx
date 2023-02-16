@@ -1,47 +1,20 @@
-import { useState } from 'react';
-import { useMutation } from 'react-query';
-
 import { Container } from '@mui/system';
 import { IconButton, InputAdornment } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { CardTextFieldWrapper } from './column-name-input.styles';
-import { deleteColumnFn } from '../../../columns/services/column.services';
-import { ErrorSnackbar } from '../error-snackbar/error-snackbar.component';
 
-import { COLUMN_QUERY_KEY } from '../../constants/app-keys.const';
-import { IColumnDelete, IColumnResponse } from '../../types/column.interface';
 import { ColorMithril } from '../../constants/card.styles';
+import { useDeleteColumnQuery } from '../../../../hooks/column-hooks/use-delete-column';
 
 export interface IStyledInputProps {
   defaultValue: string;
 }
 
 export const StyledColumnNameInput = ({ name }: IStyledInputProps | any) => {
-  const [columnError, setColumnError] = useState();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const deleteColumnMutation = useMutation(
-    COLUMN_QUERY_KEY,
-    (values: IColumnDelete) => deleteColumnFn(values as any),
-    {
-      COLUMN_QUERY_KEY,
-      // onSuccess: async (columnData: IColumnResponse[]) => {
-      //   // setColumnData(columnData);
-      // },
-
-      onError: (data: any) => {
-        setColumnError(data.response?.data?.message);
-        setIsOpen(true);
-      }
-    } as IColumnResponse | any
-  );
+  const deleteColumnMutation = useDeleteColumnQuery();
 
   const deleteItem = async () => {
     deleteColumnMutation.mutate(name);
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
   };
 
   return (
@@ -60,14 +33,6 @@ export const StyledColumnNameInput = ({ name }: IStyledInputProps | any) => {
         variant="standard"
         defaultValue={name}
       />
-      {columnError && (
-        <ErrorSnackbar
-          open={open}
-          onClose={handleClose}
-          onClick={handleClose}
-          errorMessage={columnError}
-        />
-      )}
     </Container>
   );
 };

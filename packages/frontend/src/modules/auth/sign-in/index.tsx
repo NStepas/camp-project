@@ -1,44 +1,30 @@
-import { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { useMutation } from 'react-query';
+import { Link } from 'react-router-dom';
 import { Card, CardActions, Typography } from '@mui/material';
 import { Container, Stack } from '@mui/system';
 import { useFormik } from 'formik';
 
-import { signInFn } from '../servises/auth.services';
 import { validate } from '../validation/signin-validation';
-import { initialSignInValue } from '../../common/constants/form-validation-constants';
-import { ISignInResponse, ISignInUser } from '../../common/types/auth.interface';
+
+import { AuthStyledButton } from '../auth-button-component';
+import { useSignInQuery } from '../../../hooks/auth-hooks/use-sign-in';
 
 import { StyledInput } from '../../common/components/auth-input';
-import { ErrorSnackbar } from '../../common/components/error-snackbar/error-snackbar.component';
 import { SignInButton } from '../../common/constants/button-component-config';
-
-import { LocalStorageActions } from '../validation/local-storage.actions';
 import { SignInComponentsConfig } from '../../common/constants/auth-components-config';
 import {
   CardActionStyles,
   StyledAuthCard,
   StyledAuthContainer
 } from '../../common/constants/styled-component.constants';
-import {
-  ROUTER_KEYS,
-  SIGN_IN_KEY,
-  SIGN_UP_KEY,
-  USER_QUERY_KEY
-} from '../../common/constants/app-keys.const';
+import { SIGN_UP_KEY } from '../../common/constants/app-keys.const';
+import { initialSignInValue } from '../../common/constants/form-validation-constants';
+import { ISignInUser } from '../../common/types/auth.interface';
 
 import { COLORS } from '../../theme/colors.const';
-import { AuthStyledButton } from '../auth-button-component';
 
 export const SignInContainer = () => {
-  const [userError, setUserError] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
-
-  const history = useHistory();
-
   const handleSubmit = async (value: ISignInUser) => {
-    signInMutation.mutate(value);
+    signInMutation.mutate(value as any);
   };
 
   const formik = useFormik({
@@ -47,22 +33,7 @@ export const SignInContainer = () => {
     onSubmit: handleSubmit
   });
 
-  const signInMutation = useMutation(SIGN_IN_KEY, (user: ISignInUser) => signInFn(user), {
-    USER_QUERY_KEY,
-    onSuccess: async (data: ISignInResponse) => {
-      LocalStorageActions(data as any);
-      history.push(ROUTER_KEYS.ROOT);
-    },
-
-    onError: (data: any) => {
-      setUserError(data.response?.data?.message);
-      setIsOpen(true);
-    }
-  } as ISignInResponse | any);
-
-  const handleClose = () => {
-    setIsOpen(false);
-  };
+  const signInMutation = useSignInQuery();
 
   return (
     <Container sx={StyledAuthContainer}>
@@ -94,15 +65,6 @@ export const SignInContainer = () => {
           </Stack>
         </Card>
       </form>
-
-      {userError && (
-        <ErrorSnackbar
-          open={open}
-          onClose={handleClose}
-          onClick={handleClose}
-          errorMessage={userError}
-        />
-      )}
     </Container>
   );
 };

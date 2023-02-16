@@ -1,43 +1,29 @@
-import { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { useMutation } from 'react-query';
+import { Link } from 'react-router-dom';
 import { Card, CardActions, Typography } from '@mui/material';
 import { Container, Stack } from '@mui/system';
 import { useFormik } from 'formik';
 
-import { ErrorSnackbar } from '../../common/components/error-snackbar/error-snackbar.component';
-import { StyledInput } from '../../common/components/auth-input';
-import { SignUpButton } from '../../common/constants/button-component-config';
+import { AuthStyledButton } from '../auth-button-component';
+import { useSignInQuery } from '../../../hooks/auth-hooks/use-sign-in';
 
-import { LocalStorageActions } from '../validation/local-storage.actions';
 import { validate } from '../validation/signup-validation';
 import { initialSignUpValue } from '../../common/constants/form-validation-constants';
-import { signUpFn } from '../servises/auth.services';
-import { ISignUpResponse, ISignUpUser } from '../../common/types/auth.interface';
+import { ISignUpUser } from '../../common/types/auth.interface';
 import {
   CardActionStyles,
   StyledAuthCard,
   StyledAuthContainer
 } from '../../common/constants/styled-component.constants';
+import { StyledInput } from '../../common/components/auth-input';
+import { SignUpButton } from '../../common/constants/button-component-config';
 import { SignUpComponentsConfig } from '../../common/constants/auth-components-config';
-import {
-  ROUTER_KEYS,
-  SIGN_IN_KEY,
-  SIGN_UP_KEY,
-  USER_QUERY_KEY
-} from '../../common/constants/app-keys.const';
+import { SIGN_IN_KEY } from '../../common/constants/app-keys.const';
 
 import { COLORS } from '../../theme/colors.const';
-import { AuthStyledButton } from '../auth-button-component';
 
 export const SignUpContainer = () => {
-  const [userError, setUserError] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
-
-  const history = useHistory();
-
   const handleSubmit = async (value: ISignUpUser) => {
-    signInMutation.mutate(value);
+    signInMutation.mutate(value as any);
   };
 
   const formik = useFormik({
@@ -46,22 +32,7 @@ export const SignUpContainer = () => {
     onSubmit: handleSubmit
   });
 
-  const signInMutation = useMutation(SIGN_UP_KEY, (user: ISignUpUser) => signUpFn(user), {
-    USER_QUERY_KEY,
-    onSuccess: async (data: ISignUpResponse) => {
-      LocalStorageActions(data as any);
-      history.push(ROUTER_KEYS.ROOT);
-    },
-
-    onError: (data: any) => {
-      setUserError(data.response?.data?.message);
-      setIsOpen(true);
-    }
-  } as ISignUpResponse | any);
-
-  const handleClose = () => {
-    setIsOpen(false);
-  };
+  const signInMutation = useSignInQuery();
 
   return (
     <Container sx={StyledAuthContainer}>
@@ -93,15 +64,6 @@ export const SignUpContainer = () => {
           </Stack>
         </Card>
       </form>
-
-      {userError && (
-        <ErrorSnackbar
-          open={open}
-          onClose={handleClose}
-          onClick={handleClose}
-          errorMessage={userError}
-        />
-      )}
     </Container>
   );
 };

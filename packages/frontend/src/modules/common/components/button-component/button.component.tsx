@@ -6,7 +6,7 @@ export interface IStyledButtonProps {
   type: 'submit' | 'reset' | 'button';
   size?: 'small' | 'medium' | 'large';
   label: string;
-
+  sx?: any;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -16,10 +16,18 @@ export const StyledButton = ({
   size,
   label,
   onClick,
-  disabled
+  disabled,
+  sx
 }: IStyledButtonProps) => {
   return (
-    <ButtonWrraper variant={variant} type={type} size={size} onClick={onClick} disabled={disabled}>
+    <ButtonWrraper
+      variant={variant}
+      type={type}
+      size={size}
+      onClick={onClick}
+      disabled={disabled}
+      sx={sx}
+    >
       {label}
     </ButtonWrraper>
   );

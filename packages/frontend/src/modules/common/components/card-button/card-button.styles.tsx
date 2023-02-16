@@ -8,6 +8,7 @@ export const CardButtonWrraper = styled(Button)`
   padding: 0px !important;
   height: fit-content;
   width: max-content;
+  margin-top: 0.3rem;
   && {
     border-radius: 1.5rem;
     color: ${COLORS.mithril};

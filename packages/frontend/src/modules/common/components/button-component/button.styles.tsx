@@ -10,5 +10,5 @@ export const ButtonWrraper = styled(Button)`
   width: max-content;
   flex-direction: row-reverse;
   width: 10rem !important;
-  margin-left: 1rem;
+  margin-right: 1rem;
 `;

@@ -2,9 +2,8 @@ import { Card } from '@mui/material';
 import styled from 'styled-components';
 
 export const CardWrapper = styled(Card)`
-  margin: 0;
+  margin: 10px auto;
   padding: 0;
-  height: 100%;
 
   display: flex;
   flex-direction: row;

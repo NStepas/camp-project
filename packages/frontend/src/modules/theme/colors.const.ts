@@ -6,5 +6,6 @@ export const COLORS = {
   main: '#29487C',
   indigo: '#7579E7',
   grey: '#F1F5F8',
-  mithril: '#878787'
+  mithril: '#878787',
+  menubar: '#3E5987'
 };

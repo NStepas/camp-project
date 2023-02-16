@@ -4,14 +4,17 @@ import AppContainer from './modules/app';
 
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { ChakraProvider } from '@chakra-ui/react';
 import 'overlayscrollbars/overlayscrollbars.css';
 
-const queryClient = new QueryClient();
+const client = new QueryClient();
 
 ReactDOM.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={client}>
+      {/* <ChakraProvider> */}
       <AppContainer />
+      {/* </ChakraProvider> */}
       <ReactQueryDevtools initialIsOpen />
     </QueryClientProvider>
   </React.StrictMode>,
