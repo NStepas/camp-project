@@ -14,7 +14,8 @@ export const HomeGridWrapper = styled(Grid)`
 `;
 
 export const MainContainer = styled(Container)`
-  height: 100vh;
+  min-height: 100vh;
+  height: fit-content;
   @media (max-width: 600px) {
     padding: 0rem;
   }

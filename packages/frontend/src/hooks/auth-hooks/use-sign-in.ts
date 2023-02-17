@@ -24,17 +24,14 @@ export const useSignInQuery = () => {
       }, 500);
     },
     onError: (err) => {
-      if (err instanceof Error) {
-        console.log(toast);
-        toast({
-          status: 'error',
-          duration: 9000,
-          isClosable: true,
-          //@ts-ignore
-          title: err.response?.data?.message,
-          position: 'bottom-left'
-        });
-      }
+      alert(err.response?.data?.message);
+      toast({
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+        title: err.response?.data?.message,
+        position: 'bottom-left'
+      });
     }
   } as ISignInResponse | any);
 };

@@ -22,6 +22,24 @@ export const createCardFn = async (cardData: ICardCreate) => {
   return response.data;
 };
 
+export const dndCardFn = async (cardData: ICardUpdate | any) => {
+  const response = await mainApi.patch<ICardResponse>(
+    `/card`,
+    {
+      columnId: cardData.draggableId,
+      oldIndex: cardData.source.index,
+      newIndex: cardData.destination.index
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  return response.data;
+};
+
 export const updateCardFn = async (cardData: ICardUpdate) => {
   const response = await mainApi.put<ICardResponse>(
     `/card/${cardData.cardId}`,

@@ -20,7 +20,6 @@ export const MobileNavBar = () => {
   };
 
   const handleOpenMenu = () => {
-    console.log(isOpen);
     setIsOpen(!isOpen);
   };
 

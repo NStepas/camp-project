@@ -1,29 +1,30 @@
+import React from 'react';
 import { useRef, useState } from 'react';
 
 import { CardActions, CardContent, Container } from '@mui/material';
 import { useFormik } from 'formik';
+import { Draggable } from 'react-beautiful-dnd';
+import { StrictModeDroppable as Droppable } from '../../../helpers/strict-mode-droppable';
 
 import { CardWrapper } from '.';
 import { StyledCard } from '../card-input-create';
 import { StyledColumnNameInput } from '../column-name-input';
 import { CreateCard } from '../card-create';
 import { useMatchMedia } from '../../../../hooks/use-match-media';
-import { useScrollbar } from '../../../../hooks/use-scrollbar';
 import { useUpdateColumnQuery } from '../../../../hooks/column-hooks/use-update-column';
 
 import { validate } from '../../../auth/validation/signin-validation';
 import { ButtonAtStart, HeaderColumnStyle } from '../../constants/card.styles';
 import { initialColumnValue } from '../../constants/form-validation-constants';
 
-export const StyledColumn = (props: any) => {
+export const StyledColumn = React.forwardRef(({ data, ...rest }: any, ref: any) => {
   const [value, setValue] = useState();
+
   const { isMobile } = useMatchMedia();
-  const todoWrapper = useRef(null);
 
-  const hasScroll = isMobile && props.data.cards.length > 3;
-  useScrollbar(todoWrapper, hasScroll);
+  const hasScroll = isMobile && data.cards.length > 3;
 
-  const values = { name: value, columnId: props.data._id };
+  const values = { name: value, columnId: data._id };
 
   const updateColumnMutation = useUpdateColumnQuery();
 
@@ -51,6 +52,9 @@ export const StyledColumn = (props: any) => {
 
   return (
     <CardWrapper
+      id={data._id}
+      ref={ref}
+      {...rest}
       sx={{
         display: 'flex',
         justifyContent: 'center',
@@ -68,32 +72,56 @@ export const StyledColumn = (props: any) => {
               style={{ display: 'flex', flexDirection: 'row' }}
             >
               <StyledColumnNameInput
-                name={props.data.columnName}
-                defaultValue={props.data.columnName}
+                name={data.columnName}
+                defaultValue={data.columnName}
                 onKeyPress={handleKeySubmit as any}
               />
             </form>
           </Container>
-          <Container
-            sx={{ display: 'flex', flexDirection: 'column', margin: '0', paddingRight: '0.2rem' }}
-          >
-            <div
-              style={{
-                maxHeight: isMobile ? `6.5rem` : '100vh',
-                padding: 'none'
-              }}
-              ref={todoWrapper}
-            >
-              {props.data.cards.map((input: any, index: number) => (
-                <StyledCard {...input} key={index} />
-              ))}
-            </div>
-          </Container>
+          <Droppable droppableId="card" key="card" direction="vertical">
+            {(provided) => (
+              <Container
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  margin: '0',
+                  paddingRight: '0.2rem'
+                }}
+              >
+                <div
+                  style={{
+                    maxHeight: isMobile ? `6.5rem` : '100vh',
+                    padding: 'none',
+                    overflowX: hasScroll ? 'auto' : null
+                  }}
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  {data.cards.map((input: any, index: number) => (
+                    <Draggable key={input._id} draggableId={input._id} index={index}>
+                      {(provided) => (
+                        <StyledCard
+                          id={input._id}
+                          cardName={input.cardName}
+                          {...input}
+                          key={index}
+                          {...provided.dragHandleProps}
+                          {...provided.draggableProps}
+                          ref={provided.innerRef}
+                        />
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              </Container>
+            )}
+          </Droppable>
         </CardContent>
         <CardActions disableSpacing sx={ButtonAtStart}>
-          <CreateCard id={props.data._id} />
+          <CreateCard id={data._id} />
         </CardActions>
       </CardContent>
     </CardWrapper>
   );
-};
+});

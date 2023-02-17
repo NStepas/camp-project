@@ -40,6 +40,18 @@ export class CardController {
       return errorHandler(StatusCodes.BAD_GATEWAY, CARD_ERROR.FAILED_TO_UPDATE_CARD, res);
     }
   };
+
+  updateCardColumnId = async (req: Request, res: Response) => {
+    try {
+      const oldColumn = await this.cardService.getOneCard(req.body.cardId, req.body.columnId);
+      if (oldColumn) {
+        return res.json(await this.cardService.updateCardColumnId(req.body, oldColumn));
+      }
+      return res.json(null);
+    } catch (e) {
+      return errorHandler(StatusCodes.BAD_GATEWAY, CARD_ERROR.FAILED_TO_UPDATE_CARD_COLUMN_ID, res);
+    }
+  };
 }
 
 const cardController = new CardController(new CardService());

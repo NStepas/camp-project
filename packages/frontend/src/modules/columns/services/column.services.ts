@@ -23,7 +23,6 @@ export const createColumnFn = async (columnData: IColumnCreate) => {
 };
 
 export const getColumnFn = async () => {
-  localStorage.removeItem('id');
   const response = await mainApi.get<IColumnResponse>('/column', {
     headers: {
       Authorization: `Bearer ${token}`
@@ -36,6 +35,24 @@ export const updateColumnFn = async (columnData: IColumnUpdate) => {
   const response = await mainApi.put<IColumnResponse>(
     `/column/${columnData.columnId}`,
     { columnData: columnData.name },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+
+  return response.data;
+};
+
+export const dndColumnFn = async (columnData: IColumnUpdate | any) => {
+  const response = await mainApi.patch<IColumnResponse>(
+    `/column`,
+    {
+      columnId: columnData.draggableId,
+      oldIndex: columnData.source.index,
+      newIndex: columnData.destination.index
+    },
     {
       headers: {
         Authorization: `Bearer ${token}`

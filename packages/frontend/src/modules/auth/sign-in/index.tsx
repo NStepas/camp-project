@@ -8,6 +8,7 @@ import { validate } from '../validation/signin-validation';
 import { AuthStyledButton } from '../auth-button-component';
 import { useSignInQuery } from '../../../hooks/auth-hooks/use-sign-in';
 
+import { ErrorSnackbar } from '../../common/components/error-snackbar/error-snackbar.component';
 import { StyledInput } from '../../common/components/auth-input';
 import { SignInButton } from '../../common/constants/button-component-config';
 import { SignInComponentsConfig } from '../../common/constants/auth-components-config';
@@ -21,6 +22,7 @@ import { initialSignInValue } from '../../common/constants/form-validation-const
 import { ISignInUser } from '../../common/types/auth.interface';
 
 import { COLORS } from '../../theme/colors.const';
+import { useEffect, useState } from 'react';
 
 export const SignInContainer = () => {
   const handleSubmit = async (value: ISignInUser) => {
@@ -34,6 +36,10 @@ export const SignInContainer = () => {
   });
 
   const signInMutation = useSignInQuery();
+
+  const handleCloseError = () => {
+    sessionStorage.removeItem('error');
+  };
 
   return (
     <Container sx={StyledAuthContainer}>

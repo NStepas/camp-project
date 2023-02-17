@@ -32,7 +32,10 @@ export const COLUMN_ERROR = {
   FAILED_TO_GET_COLUMN: 'Failed to get column',
   FAILED_TO_DELETE_COLUMN: 'Failed to delete column',
   FAILED_TO_UPDATE_COLUMN: 'Failed to update column, maybe column name already used',
-  FAILED_TO_CREATE_COLUMN: 'Failed to create column, please try again later'
+  FAILED_TO_CREATE_COLUMN: 'Failed to create column, please try again later',
+  FAILED_TO_GET_COLUMN_COUNT:
+    'Failed to get column count and update order for columns, please try again later',
+  FAILED_TO_UPDATE_COLUMN_ORDER: 'Failed to update column order'
 };
 
 export const CARD_ERROR = {
@@ -40,5 +43,6 @@ export const CARD_ERROR = {
   FAILED_TO_GET_CARD: 'Failed to get card',
   FAILED_TO_DELETE_CARD: 'Failed to delete card',
   FAILED_TO_UPDATE_CARD: 'Failed to update card, maybe card name already used',
+  FAILED_TO_UPDATE_CARD_COLUMN_ID: 'Failed to update card column Id',
   FAILED_TO_CREATE_CARD: 'Failed to create card, please try again later'
 };

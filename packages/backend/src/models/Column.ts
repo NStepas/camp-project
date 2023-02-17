@@ -1,10 +1,14 @@
 import { Schema, model } from 'mongoose';
 
-const columnSchema = new Schema<{ columnName: string; cards: [] | any }>({
+const columnSchema = new Schema<{ columnName: string; cards: [] | any; order: number }>({
   columnName: {
     type: String,
     required: true,
     unique: true
+  },
+  order: {
+    type: Number,
+    default: 0
   },
   cards: [
     {
@@ -14,4 +18,7 @@ const columnSchema = new Schema<{ columnName: string; cards: [] | any }>({
   ]
 });
 
-export const Column = model<{ columnName: string; cards: [] }>('todo-column', columnSchema);
+export const Column = model<{ columnName: string; cards: [] | any; order: number }>(
+  'todo-column',
+  columnSchema
+);
